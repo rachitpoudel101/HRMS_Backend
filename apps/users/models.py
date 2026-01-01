@@ -11,7 +11,6 @@ class Company(SoftDeleteModelMixin, BaseTimeStampModelMixin, BaseAuditModelMixin
     registration_number = models.CharField(max_length=100, blank=True)
     address = models.TextField()
     city = models.CharField(max_length=100)
-    6
     state = models.CharField(max_length=100)
     country = models.CharField(max_length=100, default='Nepal')
     phone = models.CharField(max_length=20)
@@ -36,12 +35,9 @@ class User(SoftDeleteModelMixin, BaseTimeStampModelMixin, BaseAuditModelMixin, A
         ('MANAGER', 'Manager'),
         ('EMPLOYEE', 'Employee'),
     ]
-    bio = models.TextField(blank=True, null=True)
-    birth_date = models.DateField(blank=True, null=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='users', null=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='EMPLOYEE')
-    phone = models.CharField(max_length=20, blank=True)
-    profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
+    last_login = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
