@@ -1,11 +1,11 @@
 from django.db import models
-from apps.users.models import Company
 from apps.common.models import SoftDeleteModelMixin, BaseTimeStampModelMixin, BaseAuditModelMixin
 
 class Department(SoftDeleteModelMixin, BaseTimeStampModelMixin, BaseAuditModelMixin):
     """Department/Division"""
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='departments')
+    company = models.ForeignKey('users.Company', on_delete=models.CASCADE, related_name='departments')
     name = models.CharField(max_length=200)
+    branch = models.ForeignKey('users.Branch', on_delete=models.CASCADE, related_name='departments', null=True, blank=True)
     code = models.CharField(max_length=50)
     description = models.TextField(blank=True)
     parent_department = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL)
@@ -21,8 +21,9 @@ class Department(SoftDeleteModelMixin, BaseTimeStampModelMixin, BaseAuditModelMi
 
 class Designation(SoftDeleteModelMixin, BaseTimeStampModelMixin, BaseAuditModelMixin):
     """Job positions/titles"""
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='designations')
+    company = models.ForeignKey('users.Company', on_delete=models.CASCADE, related_name='designations')
     title = models.CharField(max_length=200)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='designations', null=True, blank=True)
     code = models.CharField(max_length=50)
     description = models.TextField(blank=True)
     level = models.IntegerField(default=1, help_text="Hierarchy level")

@@ -1,4 +1,5 @@
 from apps.common.mixins.abstract_viewset import AbstractViewSet
+from apps.common.mixins.company_filter_mixin import CompanyFilterMixin
 from rest_framework.permissions import IsAuthenticated
 from apps.users.serializers.company_serializers import CompanySerializer
 from apps.users.serializers.Branch_serializers import BranchSerializer
@@ -8,10 +9,12 @@ from apps.users.models import (
     Company, User, Branch, Employee
 )
 
-class UserViewSet(AbstractViewSet):
+class UserViewSet(CompanyFilterMixin, AbstractViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = []
+    
+    
 class CompanyViewSet(AbstractViewSet):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
@@ -26,12 +29,14 @@ def get_queryset(self):
         queryset = queryset.filter(users__id=user_id)
     return queryset
     
-class BranchViewSet(AbstractViewSet):
+    
+class BranchViewSet(CompanyFilterMixin, AbstractViewSet):
     queryset = Branch.objects.all()
     serializer_class = BranchSerializer
     permission_classes = []
 
-class EmployeeViewSet(AbstractViewSet):
+
+class EmployeeViewSet(CompanyFilterMixin, AbstractViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
     permission_classes = []

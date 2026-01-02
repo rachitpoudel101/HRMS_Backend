@@ -1,4 +1,5 @@
 from django.db import models
+from apps.department.models import Department, Designation
 from django.contrib.auth.models import AbstractUser
 from apps.common.models import SoftDeleteModelMixin, BaseTimeStampModelMixin, BaseAuditModelMixin
 
@@ -91,8 +92,8 @@ class Employee(models.Model):
     employee_id = models.CharField(max_length=50, unique=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='employees')
     branch = models.ForeignKey(Branch, on_delete=models.SET_NULL, null=True, related_name='employees')
-    department = models.ForeignKey('department.Department', on_delete=models.SET_NULL, null=True, related_name='employees')
-    designation = models.ForeignKey('department.Designation', on_delete=models.SET_NULL, null=True, related_name='employees')
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, related_name='employees')
+    designation = models.ForeignKey(Designation , on_delete=models.SET_NULL, null=True, related_name='employees')
     manager = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL, related_name='subordinates')
 
     date_of_birth = models.DateField()

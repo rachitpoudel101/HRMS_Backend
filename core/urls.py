@@ -28,7 +28,7 @@ from drf_spectacular.views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('login', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     
     # Schema endpoint
@@ -39,5 +39,6 @@ urlpatterns = [
     path("api/docs/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"), 
     
     
-    path('', include('urls.users_urls'))
+    path('', include('urls.users_urls')),
+    path('', include('urls.departments_urls')),
 ]
