@@ -1,9 +1,10 @@
 from django.db import models
+from apps.users.models import Company
 from apps.common.models import SoftDeleteModelMixin, BaseTimeStampModelMixin, BaseAuditModelMixin
 
 class Department(SoftDeleteModelMixin, BaseTimeStampModelMixin, BaseAuditModelMixin):
     """Department/Division"""
-    company = models.ForeignKey('users.Company', on_delete=models.CASCADE, related_name='departments')
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='departments')
     name = models.CharField(max_length=200)
     code = models.CharField(max_length=50)
     description = models.TextField(blank=True)
@@ -20,7 +21,7 @@ class Department(SoftDeleteModelMixin, BaseTimeStampModelMixin, BaseAuditModelMi
 
 class Designation(SoftDeleteModelMixin, BaseTimeStampModelMixin, BaseAuditModelMixin):
     """Job positions/titles"""
-    company = models.ForeignKey('users.Company', on_delete=models.CASCADE, related_name='designations')
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='designations')
     title = models.CharField(max_length=200)
     code = models.CharField(max_length=50)
     description = models.TextField(blank=True)
