@@ -1,8 +1,8 @@
-from common.mixins.baseSerilizerMixins import DynamicFieldsModelSerializer, BaseAuditSerializer
+from apps.common.mixins.baseSerilizerMixins import DynamicFieldsModelSerializer
 from apps.users.models import Company
 from rest_framework import serializers
 
-class CompanySerializer(DynamicFieldsModelSerializer, BaseAuditSerializer):
+class CompanySerializer(DynamicFieldsModelSerializer):
     name = serializers.CharField(max_length=200,required=True)
     code = serializers.CharField(max_length=50,required=True)
     registration_number = serializers.CharField(max_length=100, required=True)

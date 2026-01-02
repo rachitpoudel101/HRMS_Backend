@@ -1,8 +1,12 @@
 from apps.common.mixins.abstract_viewset import AbstractViewSet
-from apps.users.models import User
+from rest_framework.permissions import IsAuthenticated
 from apps.users.serializers.company_serializers import CompanySerializer
+from apps.users.serializers.Branch_serializers import BranchSerializer
+from apps.users.serializers.employee_serializers import EmployeeSerializer
 from apps.users.serializers.users_serializers import UserSerializer
-from apps.users.models import Company
+from apps.users.models import (
+    Company, User, Branch, Employee
+)
 
 class UserViewSet(AbstractViewSet):
     queryset = User.objects.all()
@@ -11,14 +15,23 @@ class UserViewSet(AbstractViewSet):
 class CompanyViewSet(AbstractViewSet):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
+    permission_classes = [IsAuthenticated]
+
+def get_queryset(self):
+    queryset = super().get_queryset()
+    user_id = None
+    if hasattr(self, "request") and self.request:
+        user_id = self.request.query_params.get('user_id', None)
+    if user_id is not None:
+        queryset = queryset.filter(users__id=user_id)
+    return queryset
+    
+class BranchViewSet(AbstractViewSet):
+    queryset = Branch.objects.all()
+    serializer_class = BranchSerializer
     permission_classes = []
 
-    def get_queryset(self):
-        """Optionally restricts the returned companies to a given user,
-        by filtering against a `user_id` query parameter in the URL.
-        """
-        queryset = super().get_queryset()
-        user_id = self.request.query_params.get('user_id', None)
-        if user_id is not None:
-            queryset = queryset.filter(users__id=user_id)
-        return queryset
+class EmployeeViewSet(AbstractViewSet):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+    permission_classes = []

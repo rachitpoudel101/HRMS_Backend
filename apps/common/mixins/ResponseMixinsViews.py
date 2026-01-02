@@ -22,6 +22,10 @@ class PermissionUtils:
 		return []
 	def get_per_data_actions(self, data):
 		return data
+	def get_user_all_permissions(self):
+		return []
+	def get_user_model_permissions(self):
+		return []
 
 
 class ResponseHandlerMixin:

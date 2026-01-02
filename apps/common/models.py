@@ -19,35 +19,6 @@ class BaseModel(models.Model):
 			cls._meta.db_table = f"{app_label}_{cls.__name__.lower()}"
 
 
-class SoftDeleteQuerySet(models.QuerySet):
-	'''
-	Custom QuerySet to handle soft delete operations
-	.delete() - soft delete
-	.hard_delete() - permanent delete
-	'''
-	def delete(self):
-		return super().update(is_deleted=True, deleted_at=now())
-
-	def hard_delete(self):
-		return super().delete()
-
-	def alive(self):
-		return self.filter(is_deleted=False)
-
-	def dead(self):
-		return self.filter(is_deleted=True)
-
-
-class SoftDeleteManager(models.Manager):
-	'''
-	Custom manager to use SoftDeleteQuerySet
-	'''
-	def get_queryset(self):
-		return SoftDeleteQuerySet(self.model).filter(is_deleted=False)
-
-	def hard_delete(self):
-		return self.get_queryset().hard_delete()
-
 
 class BaseTimeStampModelMixin(BaseModel):
 	"""
@@ -108,8 +79,6 @@ class SoftDeleteModelMixin(BaseModel):
 		help_text="Foreign key referencing the user who restored the record.",
 		related_name="%(class)s_restored_by"
 	)
-	objects = SoftDeleteManager()
-	all_objects = SoftDeleteQuerySet.as_manager()  # To access all objects including deleted ones
 	class Meta:
 		abstract = True
 
