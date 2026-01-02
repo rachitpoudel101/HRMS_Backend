@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'apps.common',
     'apps.users',
     'apps.department',
+    'apps.attendance',
+    'apps.holidays',
 ]
 
 MIDDLEWARE = [
