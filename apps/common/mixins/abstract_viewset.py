@@ -8,7 +8,7 @@ from django.http import Http404
 class AbstractViewSet(
     viewsets.ModelViewSet,
     ResponseHandlerMixin,
-):
+):  
     """Base ViewSet class with response handler mixin implemented.
 
     Required fields:

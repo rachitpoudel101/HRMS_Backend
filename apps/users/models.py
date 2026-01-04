@@ -27,7 +27,7 @@ class Company(SoftDeleteModelMixin, BaseTimeStampModelMixin, BaseAuditModelMixin
     def __str__(self):
         return self.name
 
-
+  
 class User(SoftDeleteModelMixin, BaseTimeStampModelMixin, BaseAuditModelMixin, AbstractUser):
     """Extended user model"""
     ROLE_CHOICES = [
