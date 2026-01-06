@@ -66,7 +66,17 @@ class AbstractViewSet(
         try:
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-            data = serializer.save()
+            
+            # Auto-set company from logged-in user if model has company field
+            save_kwargs = {}
+            if hasattr(request, "user") and request.user.is_authenticated:
+                if hasattr(request.user, 'company') and request.user.company:
+                    # Check if the model has a company field
+                    model_fields = [f.name for f in serializer.Meta.model._meta.get_fields()]
+                    if 'company' in model_fields:
+                        save_kwargs['company'] = request.user.company
+            
+            data = serializer.save(**save_kwargs)
             data.created_by = request.user if hasattr(request, "user") else None
             # self.perform_create(serializer)
 

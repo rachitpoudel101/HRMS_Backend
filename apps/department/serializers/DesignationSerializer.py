@@ -15,7 +15,7 @@ class DesignationSerializer(DynamicFieldsModelSerializer):
             'level',
             'is_active'
         ]
-        read_only_fields = ['id', 'created_at', 'updated_at', 'created_by', 'updated_by']
+        read_only_fields = ['id', 'company', 'created_at', 'updated_at', 'created_by', 'updated_by']
 
     def validate_title(self, value):
         if not value:
