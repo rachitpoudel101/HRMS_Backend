@@ -1,8 +1,8 @@
-from rest_framework.permissions import BasePermission, SAFE_METHODS
+from rest_framework.permissions import BasePermission
 
 class IsSuperAdmin(BasePermission):
     def has_permission(self, request, view):
-        return hasattr(request.user, 'role') and request.user.role == 'ADMIN' and getattr(request.user, 'is_super', False)
+        return hasattr(request.user, 'role') and request.user.role == 'superadmin' and getattr(request.user, 'is_super', True)
 
 class IsAdmin(BasePermission):
     def has_permission(self, request, view):

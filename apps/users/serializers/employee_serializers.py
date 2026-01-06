@@ -32,7 +32,7 @@ class EmployeeSerializer(DynamicFieldsModelSerializer, BaseAuditSerializer):
             'pan_number',
             'citizenship_number', 
         ]
-        read_only_fields = ['id', 'created_by', 'updated_by', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'company', 'created_by', 'updated_by', 'created_at', 'updated_at']
 
 
         def validate_user(self, value):

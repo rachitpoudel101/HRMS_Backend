@@ -1,6 +1,6 @@
 from apps.common.mixins.abstract_viewset import AbstractViewSet
 from apps.common.mixins.company_filter_mixin import CompanyFilterMixin
-from apps.common.permissions.permissions import IsSuperAdmin, IsBranchManager, IsEmployee, IsAdminOrHR
+from apps.common.permissions.permissions import IsSuperAdmin, IsBranchManager, IsAdminOrHR
 from apps.users.serializers.company_serializers import CompanySerializer
 from apps.users.serializers.Branch_serializers import BranchSerializer
 from apps.users.serializers.employee_serializers import EmployeeSerializer
@@ -68,7 +68,7 @@ class BranchViewSet(CompanyFilterMixin, AbstractViewSet):
 class EmployeeViewSet(CompanyFilterMixin, AbstractViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
-    permission_classes = [IsSuperAdmin | IsAdminOrHR | IsBranchManager | IsEmployee]
+    permission_classes = [IsSuperAdmin | IsAdminOrHR | IsBranchManager ]
 
     def get_object(self):
         obj = super().get_object()

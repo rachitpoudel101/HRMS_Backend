@@ -15,7 +15,7 @@ class BranchSerializer(DynamicFieldsModelSerializer, BaseAuditSerializer):
             'phone',
             'is_active',
         ]
-        read_only_fields = ['id', 'created_by', 'updated_by', 'created_at', 'updated_at']
+        read_only_fields = ['id','company', 'created_by', 'updated_by', 'created_at', 'updated_at']
         
         def validate_code(self, value):
             if Branch.objects.filter(code=value).exists():
