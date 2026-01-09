@@ -46,6 +46,7 @@ class User(SoftDeleteModelMixin, BaseTimeStampModelMixin, BaseAuditModelMixin, A
         return self.username
     class Meta:
         db_table = 'users'
+        unique_together = ['username', 'company']
         
 
 class Branch(SoftDeleteModelMixin, BaseTimeStampModelMixin, BaseAuditModelMixin):

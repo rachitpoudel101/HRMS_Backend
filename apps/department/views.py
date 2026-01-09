@@ -1,6 +1,5 @@
 from apps.common.mixins.abstract_viewset import AbstractViewSet
 from apps.common.mixins.company_filter_mixin import CompanyFilterMixin
-from rest_framework.permissions import IsAuthenticated
 from apps.common.permissions.permissions import IsBranchManager, IsSuperAdmin, IsAdminOrHR
 from apps.department.serializers.department_serializers import DepartmentSerializer
 
