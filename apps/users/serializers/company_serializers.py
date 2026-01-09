@@ -20,8 +20,6 @@ class CompanySerializer(DynamicFieldsModelSerializer):
             'country',
             'phone',
             'email',
-            'website',
-            'logo',
             'is_active',
         ]
         read_only_fields = ['id', 'created_by', 'updated_by', 'created_at', 'updated_at']
