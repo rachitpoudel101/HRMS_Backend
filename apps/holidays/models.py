@@ -1,6 +1,6 @@
 from django.db import models
 from apps.common.models import SoftDeleteModelMixin, BaseTimeStampModelMixin, BaseAuditModelMixin
-from apps.users.models import Employee
+from apps.users.models import Employee, Branch
 class Holiday(SoftDeleteModelMixin, BaseTimeStampModelMixin, BaseAuditModelMixin):
     """
     Model to represent holidays for employees
@@ -8,6 +8,7 @@ class Holiday(SoftDeleteModelMixin, BaseTimeStampModelMixin, BaseAuditModelMixin
     name = models.CharField(max_length=200, help_text="Name of the holiday")
     date = models.DateField(help_text="Date of the holiday")
     description = models.TextField(blank=True, help_text="Description of the holiday")
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE, blank=True, null=True, related_name='holidays', help_text="Branch associated with this holiday")
     employees = models.ManyToManyField(Employee, related_name='holidays', blank=True, help_text="Employees associated with this holiday")
 
     class Meta:
