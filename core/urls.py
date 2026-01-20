@@ -42,4 +42,5 @@ urlpatterns = [
     path('', include('urls.users_urls')),
     path('', include('urls.departments_urls')),
     path('', include('urls.attendance_urls')),
+    path('', include('urls.notice_urls')),
 ]
