@@ -8,10 +8,19 @@ from apps.users.serializers.users_serializers import UserSerializer
 from apps.users.models import (
     Company, User, Branch, Employee
 )
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_current_user(request):
+    """
+    Returns the current authenticated user's profile
+    """
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
 
 class UserViewSet(CompanyFilterMixin, AbstractViewSet):
 
@@ -45,7 +54,7 @@ class UserViewSet(CompanyFilterMixin, AbstractViewSet):
         """
         user = self.get_object()
         new_role = request.data.get('role')
-        allowed_roles = ['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE']
+        allowed_roles = ['SUPERADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE']
         if new_role not in allowed_roles:
             return Response({'detail': 'Invalid role.'}, status=status.HTTP_400_BAD_REQUEST)
         user.role = new_role

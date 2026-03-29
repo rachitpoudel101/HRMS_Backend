@@ -31,6 +31,7 @@ class Company(SoftDeleteModelMixin, BaseTimeStampModelMixin, BaseAuditModelMixin
 class User(SoftDeleteModelMixin, BaseTimeStampModelMixin, BaseAuditModelMixin, AbstractUser):
     """Extended user model"""
     ROLE_CHOICES = [
+        ('SUPERADMIN', 'Super Administrator'),
         ('ADMIN', 'Administrator'),
         ('HR', 'HR Manager'),
         ('MANAGER', 'Manager'),

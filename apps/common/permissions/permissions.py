@@ -2,7 +2,7 @@ from rest_framework.permissions import BasePermission
 
 class IsSuperAdmin(BasePermission):
     def has_permission(self, request, view):
-        return hasattr(request.user, 'role') and request.user.role == 'superadmin' and getattr(request.user, 'is_super', True)
+        return hasattr(request.user, 'role') and request.user.role == 'SUPERADMIN' and getattr(request.user, 'is_super', True)
 
 class IsAdmin(BasePermission):
     def has_permission(self, request, view):
@@ -36,7 +36,7 @@ class IsAdminOrHROrSuperAdmin(BasePermission):
         
         # Check if user has required role for write operations
         if hasattr(request.user, 'role'):
-            if request.user.role in ['ADMIN', 'HR']:
+            if request.user.role in ['ADMIN', 'HR', 'SUPERADMIN']:
                 return True
             # Check for superadmin
             if getattr(request.user, 'is_super', False):
