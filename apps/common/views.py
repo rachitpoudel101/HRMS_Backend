@@ -17,9 +17,9 @@
 #             {'error': f'Model {app_label}.{model_name} not found'},
 #             status=status.HTTP_404_NOT_FOUND
 #         )
-    
+
 #     fields_metadata = []
-    
+
 #     for field in model._meta.get_fields():
 #         # Skip reverse relations and many-to-many
 #         if field.many_to_one or field.one_to_one:
@@ -98,7 +98,7 @@
 #                 'label': field.verbose_name.title(),
 #                 'required': not field.null,
 #             })
-    
+
 #     return Response({
 #         'model': f"{app_label}.{model_name}",
 #         'fields': fields_metadata,
@@ -117,19 +117,19 @@
 #             {'error': f'Model {app_label}.{model_name} not found'},
 #             status=status.HTTP_404_NOT_FOUND
 #         )
-    
+
 #     # Get all objects from the model
 #     queryset = model.objects.all()
-    
+
 #     # Filter by company if the model has a company field
 #     if hasattr(model, 'company') and 'company_id' in request.query_params:
 #         queryset = queryset.filter(company_id=request.query_params['company_id'])
-    
+
 #     options = []
 #     for obj in queryset:
 #         options.append({
 #             'id': obj.pk,
 #             'label': str(obj),
 #         })
-    
+
 #     return Response({'options': options})

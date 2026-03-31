@@ -6,91 +6,154 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('department', '0002_initial'),
+        ("department", "0002_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='department',
-            name='deleted_at',
+            model_name="department",
+            name="deleted_at",
             field=models.DateTimeField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='department',
-            name='deleted_by',
-            field=models.ForeignKey(blank=True, help_text='Foreign key referencing the user who deleted the record.', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_deleted_by', to=settings.AUTH_USER_MODEL),
+            model_name="department",
+            name="deleted_by",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="Foreign key referencing the user who deleted the record.",
+                null=True,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                related_name="%(class)s_deleted_by",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddField(
-            model_name='department',
-            name='restored_at',
+            model_name="department",
+            name="restored_at",
             field=models.DateTimeField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='department',
-            name='restored_by',
-            field=models.ForeignKey(blank=True, help_text='Foreign key referencing the user who restored the record.', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_restored_by', to=settings.AUTH_USER_MODEL),
+            model_name="department",
+            name="restored_by",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="Foreign key referencing the user who restored the record.",
+                null=True,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                related_name="%(class)s_restored_by",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddField(
-            model_name='designation',
-            name='deleted_at',
+            model_name="designation",
+            name="deleted_at",
             field=models.DateTimeField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='designation',
-            name='deleted_by',
-            field=models.ForeignKey(blank=True, help_text='Foreign key referencing the user who deleted the record.', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_deleted_by', to=settings.AUTH_USER_MODEL),
+            model_name="designation",
+            name="deleted_by",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="Foreign key referencing the user who deleted the record.",
+                null=True,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                related_name="%(class)s_deleted_by",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddField(
-            model_name='designation',
-            name='restored_at',
+            model_name="designation",
+            name="restored_at",
             field=models.DateTimeField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='designation',
-            name='restored_by',
-            field=models.ForeignKey(blank=True, help_text='Foreign key referencing the user who restored the record.', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_restored_by', to=settings.AUTH_USER_MODEL),
+            model_name="designation",
+            name="restored_by",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="Foreign key referencing the user who restored the record.",
+                null=True,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                related_name="%(class)s_restored_by",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterField(
-            model_name='department',
-            name='created_at',
-            field=models.DateTimeField(auto_now_add=True, help_text='Timestamp when the record was created'),
+            model_name="department",
+            name="created_at",
+            field=models.DateTimeField(
+                auto_now_add=True, help_text="Timestamp when the record was created"
+            ),
         ),
         migrations.AlterField(
-            model_name='department',
-            name='created_by',
-            field=models.ForeignKey(blank=True, help_text='Foreign key referencing the user who created the record.', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_created_by', to=settings.AUTH_USER_MODEL),
+            model_name="department",
+            name="created_by",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="Foreign key referencing the user who created the record.",
+                null=True,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                related_name="%(class)s_created_by",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterField(
-            model_name='department',
-            name='updated_at',
-            field=models.DateTimeField(auto_now=True, help_text='Timestamp when the record was last updated'),
+            model_name="department",
+            name="updated_at",
+            field=models.DateTimeField(
+                auto_now=True, help_text="Timestamp when the record was last updated"
+            ),
         ),
         migrations.AlterField(
-            model_name='department',
-            name='updated_by',
-            field=models.ForeignKey(blank=True, help_text='Foreign key referencing the user who updated the record.', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_updated_by', to=settings.AUTH_USER_MODEL),
+            model_name="department",
+            name="updated_by",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="Foreign key referencing the user who updated the record.",
+                null=True,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                related_name="%(class)s_updated_by",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterField(
-            model_name='designation',
-            name='created_at',
-            field=models.DateTimeField(auto_now_add=True, help_text='Timestamp when the record was created'),
+            model_name="designation",
+            name="created_at",
+            field=models.DateTimeField(
+                auto_now_add=True, help_text="Timestamp when the record was created"
+            ),
         ),
         migrations.AlterField(
-            model_name='designation',
-            name='created_by',
-            field=models.ForeignKey(blank=True, help_text='Foreign key referencing the user who created the record.', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_created_by', to=settings.AUTH_USER_MODEL),
+            model_name="designation",
+            name="created_by",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="Foreign key referencing the user who created the record.",
+                null=True,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                related_name="%(class)s_created_by",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterField(
-            model_name='designation',
-            name='updated_at',
-            field=models.DateTimeField(auto_now=True, help_text='Timestamp when the record was last updated'),
+            model_name="designation",
+            name="updated_at",
+            field=models.DateTimeField(
+                auto_now=True, help_text="Timestamp when the record was last updated"
+            ),
         ),
         migrations.AlterField(
-            model_name='designation',
-            name='updated_by',
-            field=models.ForeignKey(blank=True, help_text='Foreign key referencing the user who updated the record.', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_updated_by', to=settings.AUTH_USER_MODEL),
+            model_name="designation",
+            name="updated_by",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="Foreign key referencing the user who updated the record.",
+                null=True,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                related_name="%(class)s_updated_by",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

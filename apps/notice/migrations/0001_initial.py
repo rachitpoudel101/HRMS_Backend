@@ -6,84 +6,316 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('users', '0005_alter_user_unique_together'),
+        ("users", "0005_alter_user_unique_together"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Notic',
+            name="Notic",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, help_text='Timestamp when the record was created')),
-                ('updated_at', models.DateTimeField(auto_now=True, help_text='Timestamp when the record was last updated')),
-                ('is_deleted', models.BooleanField(default=False)),
-                ('deleted_at', models.DateTimeField(blank=True, null=True)),
-                ('restored_at', models.DateTimeField(blank=True, null=True)),
-                ('name', models.CharField(help_text='Name of the holiday', max_length=200)),
-                ('date', models.DateField(help_text='Date of the holiday')),
-                ('description', models.TextField(blank=True, help_text='Description of the holiday')),
-                ('branch', models.ForeignKey(help_text='Branch associated with this notice', on_delete=django.db.models.deletion.CASCADE, related_name='notices', to='users.branch')),
-                ('created_by', models.ForeignKey(blank=True, help_text='Foreign key referencing the user who created the record.', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_created_by', to=settings.AUTH_USER_MODEL)),
-                ('deleted_by', models.ForeignKey(blank=True, help_text='Foreign key referencing the user who deleted the record.', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_deleted_by', to=settings.AUTH_USER_MODEL)),
-                ('employees', models.ManyToManyField(blank=True, help_text='Employees associated with this notice', related_name='notices', to='users.employee')),
-                ('restored_by', models.ForeignKey(blank=True, help_text='Foreign key referencing the user who restored the record.', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_restored_by', to=settings.AUTH_USER_MODEL)),
-                ('updated_by', models.ForeignKey(blank=True, help_text='Foreign key referencing the user who updated the record.', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_updated_by', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(
+                        auto_now_add=True,
+                        help_text="Timestamp when the record was created",
+                    ),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(
+                        auto_now=True,
+                        help_text="Timestamp when the record was last updated",
+                    ),
+                ),
+                ("is_deleted", models.BooleanField(default=False)),
+                ("deleted_at", models.DateTimeField(blank=True, null=True)),
+                ("restored_at", models.DateTimeField(blank=True, null=True)),
+                (
+                    "name",
+                    models.CharField(help_text="Name of the holiday", max_length=200),
+                ),
+                ("date", models.DateField(help_text="Date of the holiday")),
+                (
+                    "description",
+                    models.TextField(
+                        blank=True, help_text="Description of the holiday"
+                    ),
+                ),
+                (
+                    "branch",
+                    models.ForeignKey(
+                        help_text="Branch associated with this notice",
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="notices",
+                        to="users.branch",
+                    ),
+                ),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="Foreign key referencing the user who created the record.",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="%(class)s_created_by",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "deleted_by",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="Foreign key referencing the user who deleted the record.",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="%(class)s_deleted_by",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "employees",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="Employees associated with this notice",
+                        related_name="notices",
+                        to="users.employee",
+                    ),
+                ),
+                (
+                    "restored_by",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="Foreign key referencing the user who restored the record.",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="%(class)s_restored_by",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "updated_by",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="Foreign key referencing the user who updated the record.",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="%(class)s_updated_by",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Notice',
-                'verbose_name_plural': 'Notices',
-                'db_table': 'notice',
-                'unique_together': {('name', 'date')},
+                "verbose_name": "Notice",
+                "verbose_name_plural": "Notices",
+                "db_table": "notice",
+                "unique_together": {("name", "date")},
             },
         ),
         migrations.CreateModel(
-            name='NoticeAttachment',
+            name="NoticeAttachment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, help_text='Timestamp when the record was created')),
-                ('updated_at', models.DateTimeField(auto_now=True, help_text='Timestamp when the record was last updated')),
-                ('is_deleted', models.BooleanField(default=False)),
-                ('deleted_at', models.DateTimeField(blank=True, null=True)),
-                ('restored_at', models.DateTimeField(blank=True, null=True)),
-                ('file', models.FileField(help_text='File attachment for the notice', upload_to='notice_attachments/')),
-                ('description', models.TextField(blank=True, help_text='Description of the attachment')),
-                ('created_by', models.ForeignKey(blank=True, help_text='Foreign key referencing the user who created the record.', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_created_by', to=settings.AUTH_USER_MODEL)),
-                ('deleted_by', models.ForeignKey(blank=True, help_text='Foreign key referencing the user who deleted the record.', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_deleted_by', to=settings.AUTH_USER_MODEL)),
-                ('notice', models.ForeignKey(help_text='Notice associated with this attachment', on_delete=django.db.models.deletion.CASCADE, related_name='attachments', to='notice.notic')),
-                ('restored_by', models.ForeignKey(blank=True, help_text='Foreign key referencing the user who restored the record.', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_restored_by', to=settings.AUTH_USER_MODEL)),
-                ('updated_by', models.ForeignKey(blank=True, help_text='Foreign key referencing the user who updated the record.', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_updated_by', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(
+                        auto_now_add=True,
+                        help_text="Timestamp when the record was created",
+                    ),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(
+                        auto_now=True,
+                        help_text="Timestamp when the record was last updated",
+                    ),
+                ),
+                ("is_deleted", models.BooleanField(default=False)),
+                ("deleted_at", models.DateTimeField(blank=True, null=True)),
+                ("restored_at", models.DateTimeField(blank=True, null=True)),
+                (
+                    "file",
+                    models.FileField(
+                        help_text="File attachment for the notice",
+                        upload_to="notice_attachments/",
+                    ),
+                ),
+                (
+                    "description",
+                    models.TextField(
+                        blank=True, help_text="Description of the attachment"
+                    ),
+                ),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="Foreign key referencing the user who created the record.",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="%(class)s_created_by",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "deleted_by",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="Foreign key referencing the user who deleted the record.",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="%(class)s_deleted_by",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "notice",
+                    models.ForeignKey(
+                        help_text="Notice associated with this attachment",
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="attachments",
+                        to="notice.notic",
+                    ),
+                ),
+                (
+                    "restored_by",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="Foreign key referencing the user who restored the record.",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="%(class)s_restored_by",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "updated_by",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="Foreign key referencing the user who updated the record.",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="%(class)s_updated_by",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Notice Attachment',
-                'verbose_name_plural': 'Notice Attachments',
-                'db_table': 'notice_attachment',
+                "verbose_name": "Notice Attachment",
+                "verbose_name_plural": "Notice Attachments",
+                "db_table": "notice_attachment",
             },
         ),
         migrations.CreateModel(
-            name='NoticeType',
+            name="NoticeType",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, help_text='Timestamp when the record was created')),
-                ('updated_at', models.DateTimeField(auto_now=True, help_text='Timestamp when the record was last updated')),
-                ('is_deleted', models.BooleanField(default=False)),
-                ('deleted_at', models.DateTimeField(blank=True, null=True)),
-                ('restored_at', models.DateTimeField(blank=True, null=True)),
-                ('type_name', models.CharField(help_text='Name of the notice type', max_length=100, unique=True)),
-                ('description', models.TextField(blank=True, help_text='Description of the notice type')),
-                ('created_by', models.ForeignKey(blank=True, help_text='Foreign key referencing the user who created the record.', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_created_by', to=settings.AUTH_USER_MODEL)),
-                ('deleted_by', models.ForeignKey(blank=True, help_text='Foreign key referencing the user who deleted the record.', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_deleted_by', to=settings.AUTH_USER_MODEL)),
-                ('restored_by', models.ForeignKey(blank=True, help_text='Foreign key referencing the user who restored the record.', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_restored_by', to=settings.AUTH_USER_MODEL)),
-                ('updated_by', models.ForeignKey(blank=True, help_text='Foreign key referencing the user who updated the record.', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='%(class)s_updated_by', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(
+                        auto_now_add=True,
+                        help_text="Timestamp when the record was created",
+                    ),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(
+                        auto_now=True,
+                        help_text="Timestamp when the record was last updated",
+                    ),
+                ),
+                ("is_deleted", models.BooleanField(default=False)),
+                ("deleted_at", models.DateTimeField(blank=True, null=True)),
+                ("restored_at", models.DateTimeField(blank=True, null=True)),
+                (
+                    "type_name",
+                    models.CharField(
+                        help_text="Name of the notice type", max_length=100, unique=True
+                    ),
+                ),
+                (
+                    "description",
+                    models.TextField(
+                        blank=True, help_text="Description of the notice type"
+                    ),
+                ),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="Foreign key referencing the user who created the record.",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="%(class)s_created_by",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "deleted_by",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="Foreign key referencing the user who deleted the record.",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="%(class)s_deleted_by",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "restored_by",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="Foreign key referencing the user who restored the record.",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="%(class)s_restored_by",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "updated_by",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="Foreign key referencing the user who updated the record.",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="%(class)s_updated_by",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Notice Type',
-                'verbose_name_plural': 'Notice Types',
-                'db_table': 'notice_type',
+                "verbose_name": "Notice Type",
+                "verbose_name_plural": "Notice Types",
+                "db_table": "notice_type",
             },
         ),
     ]

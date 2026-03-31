@@ -4,35 +4,34 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0002_alter_user_managers_branch_deleted_at_and_more'),
+        ("users", "0002_alter_user_managers_branch_deleted_at_and_more"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='branch',
-            name='email',
+            model_name="branch",
+            name="email",
         ),
         migrations.RemoveField(
-            model_name='user',
-            name='bio',
+            model_name="user",
+            name="bio",
         ),
         migrations.RemoveField(
-            model_name='user',
-            name='birth_date',
+            model_name="user",
+            name="birth_date",
         ),
         migrations.RemoveField(
-            model_name='user',
-            name='phone',
+            model_name="user",
+            name="phone",
         ),
         migrations.RemoveField(
-            model_name='user',
-            name='profile_picture',
+            model_name="user",
+            name="profile_picture",
         ),
         migrations.AlterField(
-            model_name='user',
-            name='last_login',
+            model_name="user",
+            name="last_login",
             field=models.DateTimeField(blank=True, null=True),
         ),
     ]

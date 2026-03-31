@@ -5,16 +5,22 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('notice', '0001_initial'),
-        ('users', '0005_alter_user_unique_together'),
+        ("notice", "0001_initial"),
+        ("users", "0005_alter_user_unique_together"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='notic',
-            name='branch',
-            field=models.ForeignKey(blank=True, help_text='Branch associated with this notice', null=True, on_delete=django.db.models.deletion.CASCADE, related_name='notices', to='users.branch'),
+            model_name="notic",
+            name="branch",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="Branch associated with this notice",
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="notices",
+                to="users.branch",
+            ),
         ),
     ]

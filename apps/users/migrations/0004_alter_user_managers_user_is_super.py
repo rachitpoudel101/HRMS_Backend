@@ -5,21 +5,20 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0003_remove_branch_email_remove_user_bio_and_more'),
+        ("users", "0003_remove_branch_email_remove_user_bio_and_more"),
     ]
 
     operations = [
         migrations.AlterModelManagers(
-            name='user',
+            name="user",
             managers=[
-                ('objects', django.contrib.auth.models.UserManager()),
+                ("objects", django.contrib.auth.models.UserManager()),
             ],
         ),
         migrations.AddField(
-            model_name='user',
-            name='is_super',
+            model_name="user",
+            name="is_super",
             field=models.BooleanField(default=False),
         ),
     ]

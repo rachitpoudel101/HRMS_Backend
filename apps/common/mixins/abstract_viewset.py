@@ -3,12 +3,14 @@ from rest_framework.exceptions import ValidationError, NotFound, PermissionDenie
 from apps.common.mixins.ResponseMixinsViews import ResponseHandlerMixin, PermissionUtils
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
+
+
 # from django.utils.decorators import method_decorator
 # from django.views.decorators.csrf import csrf_protect
 class AbstractViewSet(
     viewsets.ModelViewSet,
     ResponseHandlerMixin,
-):  
+):
     """Base ViewSet class with response handler mixin implemented.
 
     Required fields:
@@ -36,17 +38,21 @@ class AbstractViewSet(
 
     def initial(self, request, *args, **kwargs):
         request = self.request
-        self.permission_utils = PermissionUtils(request.user, self.model_name, view=self, request=request)
+        self.permission_utils = PermissionUtils(
+            request.user, self.model_name, view=self, request=request
+        )
         if request and hasattr(request, "user") and request.user.is_authenticated:
             self.user_all_permissions = self.permission_utils.get_user_all_permissions()
             self.available_actions = self.permission_utils.user_available_actions()
-            self.user_module_permissions = self.permission_utils.get_user_model_permissions()
+            self.user_module_permissions = (
+                self.permission_utils.get_user_model_permissions()
+            )
         return super().initial(request, *args, **kwargs)
 
     def list(self, request, *args, **kwargs):
         try:
             queryset = self.filter_queryset(self.get_queryset())
-            
+
             if self.pagination_class:
                 page = self.paginate_queryset(queryset)
                 return self.paginated_response(
@@ -66,21 +72,36 @@ class AbstractViewSet(
         try:
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-            
+
             # Auto-set company from logged-in user if model has company field
             save_kwargs = {}
             if hasattr(request, "user") and request.user.is_authenticated:
-                if hasattr(request.user, 'company') and request.user.company:
-                    # Check if the model has a company field
-                    model_fields = [f.name for f in serializer.Meta.model._meta.get_fields()]
-                    if 'company' in model_fields:
-                        save_kwargs['company'] = request.user.company
-            
+                # Check if the model has a company field
+                model_fields = [
+                    f.name for f in serializer.Meta.model._meta.get_fields()
+                ]
+                if "company" in model_fields:
+                    # If company not provided in request data, auto-set from user
+                    if (
+                        "company" not in serializer.validated_data
+                        or not serializer.validated_data.get("company")
+                    ):
+                        user_company = getattr(request.user, "company", None)
+                        if user_company:
+                            save_kwargs["company"] = user_company
+                        else:
+                            # User has no company (e.g., superadmin) and didn't provide one
+                            return self.error_response(
+                                message="Company is required. Please specify a company.",
+                                status_code=status.HTTP_400_BAD_REQUEST,
+                            )
+
             data = serializer.save(**save_kwargs)
             data.created_by = request.user if hasattr(request, "user") else None
-            # self.perform_create(serializer)
-
             data.save()
+
+            # Re-serialize to get updated data with related fields
+            serializer = self.get_serializer(data)
             return self.success_response(
                 message=f"{self.model_name} created successfully",
                 data=serializer.data,
@@ -153,7 +174,7 @@ class AbstractViewSet(
         try:
             instance = self.get_object()
             if hasattr(instance, "is_deleted"):
-                instance.delete(user = request.user)
+                instance.delete(user=request.user)
             elif hasattr(instance, "is_active"):
                 instance.is_active = False
             else:

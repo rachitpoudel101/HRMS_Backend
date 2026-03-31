@@ -4,15 +4,24 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0005_alter_user_unique_together'),
+        ("users", "0005_alter_user_unique_together"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='user',
-            name='role',
-            field=models.CharField(choices=[('SUPERADMIN', 'Super Administrator'), ('ADMIN', 'Administrator'), ('HR', 'HR Manager'), ('MANAGER', 'Manager'), ('EMPLOYEE', 'Employee')], default='EMPLOYEE', max_length=20),
+            model_name="user",
+            name="role",
+            field=models.CharField(
+                choices=[
+                    ("SUPERADMIN", "Super Administrator"),
+                    ("ADMIN", "Administrator"),
+                    ("HR", "HR Manager"),
+                    ("MANAGER", "Manager"),
+                    ("EMPLOYEE", "Employee"),
+                ],
+                default="EMPLOYEE",
+                max_length=20,
+            ),
         ),
     ]

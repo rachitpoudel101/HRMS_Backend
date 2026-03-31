@@ -9,133 +9,405 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('auth', '0012_alter_user_first_name_max_length'),
-        ('department', '0001_initial'),
+        ("auth", "0012_alter_user_first_name_max_length"),
+        ("department", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='User',
+            name="User",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('password', models.CharField(max_length=128, verbose_name='password')),
-                ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
-                ('is_superuser', models.BooleanField(default=False, help_text='Designates that this user has all permissions without explicitly assigning them.', verbose_name='superuser status')),
-                ('username', models.CharField(error_messages={'unique': 'A user with that username already exists.'}, help_text='Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.', max_length=150, unique=True, validators=[django.contrib.auth.validators.UnicodeUsernameValidator()], verbose_name='username')),
-                ('first_name', models.CharField(blank=True, max_length=150, verbose_name='first name')),
-                ('last_name', models.CharField(blank=True, max_length=150, verbose_name='last name')),
-                ('email', models.EmailField(blank=True, max_length=254, verbose_name='email address')),
-                ('is_staff', models.BooleanField(default=False, help_text='Designates whether the user can log into this admin site.', verbose_name='staff status')),
-                ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
-                ('is_deleted', models.BooleanField(default=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('bio', models.TextField(blank=True, null=True)),
-                ('birth_date', models.DateField(blank=True, null=True)),
-                ('role', models.CharField(choices=[('ADMIN', 'Administrator'), ('HR', 'HR Manager'), ('MANAGER', 'Manager'), ('EMPLOYEE', 'Employee')], default='EMPLOYEE', max_length=20)),
-                ('phone', models.CharField(blank=True, max_length=20)),
-                ('profile_picture', models.ImageField(blank=True, null=True, upload_to='profile_pictures/')),
-                ('is_active', models.BooleanField(default=True)),
-                ('created_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='created_%(class)s_set', to=settings.AUTH_USER_MODEL)),
-                ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.group', verbose_name='groups')),
-                ('updated_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='updated_%(class)s_set', to=settings.AUTH_USER_MODEL)),
-                ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.permission', verbose_name='user permissions')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("password", models.CharField(max_length=128, verbose_name="password")),
+                (
+                    "last_login",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="last login"
+                    ),
+                ),
+                (
+                    "is_superuser",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Designates that this user has all permissions without explicitly assigning them.",
+                        verbose_name="superuser status",
+                    ),
+                ),
+                (
+                    "username",
+                    models.CharField(
+                        error_messages={
+                            "unique": "A user with that username already exists."
+                        },
+                        help_text="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+                        max_length=150,
+                        unique=True,
+                        validators=[
+                            django.contrib.auth.validators.UnicodeUsernameValidator()
+                        ],
+                        verbose_name="username",
+                    ),
+                ),
+                (
+                    "first_name",
+                    models.CharField(
+                        blank=True, max_length=150, verbose_name="first name"
+                    ),
+                ),
+                (
+                    "last_name",
+                    models.CharField(
+                        blank=True, max_length=150, verbose_name="last name"
+                    ),
+                ),
+                (
+                    "email",
+                    models.EmailField(
+                        blank=True, max_length=254, verbose_name="email address"
+                    ),
+                ),
+                (
+                    "is_staff",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Designates whether the user can log into this admin site.",
+                        verbose_name="staff status",
+                    ),
+                ),
+                (
+                    "date_joined",
+                    models.DateTimeField(
+                        default=django.utils.timezone.now, verbose_name="date joined"
+                    ),
+                ),
+                ("is_deleted", models.BooleanField(default=False)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("bio", models.TextField(blank=True, null=True)),
+                ("birth_date", models.DateField(blank=True, null=True)),
+                (
+                    "role",
+                    models.CharField(
+                        choices=[
+                            ("ADMIN", "Administrator"),
+                            ("HR", "HR Manager"),
+                            ("MANAGER", "Manager"),
+                            ("EMPLOYEE", "Employee"),
+                        ],
+                        default="EMPLOYEE",
+                        max_length=20,
+                    ),
+                ),
+                ("phone", models.CharField(blank=True, max_length=20)),
+                (
+                    "profile_picture",
+                    models.ImageField(
+                        blank=True, null=True, upload_to="profile_pictures/"
+                    ),
+                ),
+                ("is_active", models.BooleanField(default=True)),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="created_%(class)s_set",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "groups",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="The groups this user belongs to. A user will get all permissions granted to each of their groups.",
+                        related_name="user_set",
+                        related_query_name="user",
+                        to="auth.group",
+                        verbose_name="groups",
+                    ),
+                ),
+                (
+                    "updated_by",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="updated_%(class)s_set",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "user_permissions",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="Specific permissions for this user.",
+                        related_name="user_set",
+                        related_query_name="user",
+                        to="auth.permission",
+                        verbose_name="user permissions",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'users',
+                "db_table": "users",
             },
             managers=[
-                ('objects', django.contrib.auth.models.UserManager()),
+                ("objects", django.contrib.auth.models.UserManager()),
             ],
         ),
         migrations.CreateModel(
-            name='Company',
+            name="Company",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('is_deleted', models.BooleanField(default=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=200)),
-                ('code', models.CharField(max_length=50, unique=True)),
-                ('registration_number', models.CharField(blank=True, max_length=100)),
-                ('address', models.TextField()),
-                ('city', models.CharField(max_length=100)),
-                ('state', models.CharField(max_length=100)),
-                ('country', models.CharField(default='Nepal', max_length=100)),
-                ('phone', models.CharField(max_length=20)),
-                ('email', models.EmailField(max_length=254)),
-                ('website', models.URLField(blank=True)),
-                ('logo', models.ImageField(blank=True, null=True, upload_to='company_logos/')),
-                ('is_active', models.BooleanField(default=True)),
-                ('created_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='created_%(class)s_set', to=settings.AUTH_USER_MODEL)),
-                ('updated_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='updated_%(class)s_set', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("is_deleted", models.BooleanField(default=False)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=200)),
+                ("code", models.CharField(max_length=50, unique=True)),
+                ("registration_number", models.CharField(blank=True, max_length=100)),
+                ("address", models.TextField()),
+                ("city", models.CharField(max_length=100)),
+                ("state", models.CharField(max_length=100)),
+                ("country", models.CharField(default="Nepal", max_length=100)),
+                ("phone", models.CharField(max_length=20)),
+                ("email", models.EmailField(max_length=254)),
+                ("website", models.URLField(blank=True)),
+                (
+                    "logo",
+                    models.ImageField(
+                        blank=True, null=True, upload_to="company_logos/"
+                    ),
+                ),
+                ("is_active", models.BooleanField(default=True)),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="created_%(class)s_set",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "updated_by",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="updated_%(class)s_set",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'db_table': 'company',
-                'unique_together': {('name', 'code')},
+                "db_table": "company",
+                "unique_together": {("name", "code")},
             },
         ),
         migrations.CreateModel(
-            name='Branch',
+            name="Branch",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('is_deleted', models.BooleanField(default=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=200)),
-                ('code', models.CharField(max_length=50)),
-                ('address', models.TextField()),
-                ('city', models.CharField(max_length=100)),
-                ('phone', models.CharField(max_length=20)),
-                ('email', models.EmailField(max_length=254)),
-                ('is_active', models.BooleanField(default=True)),
-                ('created_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='created_%(class)s_set', to=settings.AUTH_USER_MODEL)),
-                ('updated_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='updated_%(class)s_set', to=settings.AUTH_USER_MODEL)),
-                ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='branches', to='users.company')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("is_deleted", models.BooleanField(default=False)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=200)),
+                ("code", models.CharField(max_length=50)),
+                ("address", models.TextField()),
+                ("city", models.CharField(max_length=100)),
+                ("phone", models.CharField(max_length=20)),
+                ("email", models.EmailField(max_length=254)),
+                ("is_active", models.BooleanField(default=True)),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="created_%(class)s_set",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "updated_by",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="updated_%(class)s_set",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "company",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="branches",
+                        to="users.company",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'branch',
-                'unique_together': {('company', 'code')},
+                "db_table": "branch",
+                "unique_together": {("company", "code")},
             },
         ),
         migrations.AddField(
-            model_name='user',
-            name='company',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='users', to='users.company'),
+            model_name="user",
+            name="company",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="users",
+                to="users.company",
+            ),
         ),
         migrations.CreateModel(
-            name='Employee',
+            name="Employee",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('employee_id', models.CharField(max_length=50, unique=True)),
-                ('date_of_birth', models.DateField()),
-                ('gender', models.CharField(choices=[('M', 'Male'), ('F', 'Female'), ('O', 'Other')], max_length=1)),
-                ('marital_status', models.CharField(choices=[('SINGLE', 'Single'), ('MARRIED', 'Married'), ('DIVORCED', 'Divorced'), ('WIDOWED', 'Widowed')], max_length=20)),
-                ('nationality', models.CharField(default='Nepali', max_length=100)),
-                ('personal_email', models.EmailField(max_length=254)),
-                ('phone_number', models.CharField(max_length=20)),
-                ('emergency_contact_name', models.CharField(max_length=200)),
-                ('emergency_contact_phone', models.CharField(max_length=20)),
-                ('emergency_contact_relation', models.CharField(max_length=100)),
-                ('permanent_address', models.TextField()),
-                ('current_address', models.TextField()),
-                ('date_of_joining', models.DateField()),
-                ('date_of_exit', models.DateField(blank=True, null=True)),
-                ('employment_status', models.CharField(choices=[('ACTIVE', 'Active'), ('ON_LEAVE', 'On Leave'), ('SUSPENDED', 'Suspended'), ('TERMINATED', 'Terminated'), ('RESIGNED', 'Resigned')], default='ACTIVE', max_length=20)),
-                ('probation_end_date', models.DateField(blank=True, null=True)),
-                ('confirmation_date', models.DateField(blank=True, null=True)),
-                ('pan_number', models.CharField(blank=True, help_text='Tax ID', max_length=50)),
-                ('citizenship_number', models.CharField(blank=True, max_length=50)),
-                ('branch', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='employees', to='users.branch')),
-                ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='employees', to='users.company')),
-                ('department', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='employees', to='department.department')),
-                ('designation', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='employees', to='department.designation')),
-                ('manager', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='subordinates', to='users.employee')),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='employee_profile', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("employee_id", models.CharField(max_length=50, unique=True)),
+                ("date_of_birth", models.DateField()),
+                (
+                    "gender",
+                    models.CharField(
+                        choices=[("M", "Male"), ("F", "Female"), ("O", "Other")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "marital_status",
+                    models.CharField(
+                        choices=[
+                            ("SINGLE", "Single"),
+                            ("MARRIED", "Married"),
+                            ("DIVORCED", "Divorced"),
+                            ("WIDOWED", "Widowed"),
+                        ],
+                        max_length=20,
+                    ),
+                ),
+                ("nationality", models.CharField(default="Nepali", max_length=100)),
+                ("personal_email", models.EmailField(max_length=254)),
+                ("phone_number", models.CharField(max_length=20)),
+                ("emergency_contact_name", models.CharField(max_length=200)),
+                ("emergency_contact_phone", models.CharField(max_length=20)),
+                ("emergency_contact_relation", models.CharField(max_length=100)),
+                ("permanent_address", models.TextField()),
+                ("current_address", models.TextField()),
+                ("date_of_joining", models.DateField()),
+                ("date_of_exit", models.DateField(blank=True, null=True)),
+                (
+                    "employment_status",
+                    models.CharField(
+                        choices=[
+                            ("ACTIVE", "Active"),
+                            ("ON_LEAVE", "On Leave"),
+                            ("SUSPENDED", "Suspended"),
+                            ("TERMINATED", "Terminated"),
+                            ("RESIGNED", "Resigned"),
+                        ],
+                        default="ACTIVE",
+                        max_length=20,
+                    ),
+                ),
+                ("probation_end_date", models.DateField(blank=True, null=True)),
+                ("confirmation_date", models.DateField(blank=True, null=True)),
+                (
+                    "pan_number",
+                    models.CharField(blank=True, help_text="Tax ID", max_length=50),
+                ),
+                ("citizenship_number", models.CharField(blank=True, max_length=50)),
+                (
+                    "branch",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="employees",
+                        to="users.branch",
+                    ),
+                ),
+                (
+                    "company",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="employees",
+                        to="users.company",
+                    ),
+                ),
+                (
+                    "department",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="employees",
+                        to="department.department",
+                    ),
+                ),
+                (
+                    "designation",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="employees",
+                        to="department.designation",
+                    ),
+                ),
+                (
+                    "manager",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="subordinates",
+                        to="users.employee",
+                    ),
+                ),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="employee_profile",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]
