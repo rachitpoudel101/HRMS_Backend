@@ -177,6 +177,9 @@ class AbstractViewSet(
                 instance.delete(user=request.user)
             elif hasattr(instance, "is_active"):
                 instance.is_active = False
+            elif hasattr(instance, "employment_status"):
+                # For Employee model, set employment_status to TERMINATED
+                instance.employment_status = "TERMINATED"
             else:
                 return self.error_response(
                     message=f"{self.model_name} Couldnt be deleted"

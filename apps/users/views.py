@@ -31,6 +31,24 @@ class UserViewSet(CompanyFilterMixin, AbstractViewSet):
     serializer_class = UserSerializer
     permission_classes = [IsSuperAdmin | IsAdminOrHR]
 
+    def perform_create(self, serializer):
+        """
+        Automatically set company from authenticated user when creating new users
+        Only SUPERADMIN can select company, ADMIN/HR must use their own company
+        """
+        user = self.request.user
+        role = serializer.validated_data.get('role', '').upper()
+        
+        # If authenticated user is not SUPERADMIN, force their company
+        if hasattr(user, 'role') and user.role.upper() != 'SUPERADMIN':
+            if role != 'SUPERADMIN' and hasattr(user, 'company') and user.company:
+                serializer.save(company=user.company)
+            else:
+                serializer.save()
+        else:
+            # SUPERADMIN can create users with any company
+            serializer.save()
+
     def get_queryset(self):
         # Handle case where self.request may not exist (e.g., during schema generation)
         if not hasattr(self, "request") or self.request is None:
