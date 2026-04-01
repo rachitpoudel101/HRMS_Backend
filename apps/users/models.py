@@ -151,3 +151,11 @@ class Employee(models.Model):
 
     def __str__(self):
         return f"{self.employee_id} - {self.user.get_full_name()}"
+
+    @property
+    def name(self):
+        """Return the full name of the employee from the user model"""
+        return self.user.get_full_name() or self.user.username
+
+    class Meta:
+        db_table = "employee"
