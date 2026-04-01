@@ -74,7 +74,6 @@ class EmployeeSerializer(DynamicFieldsModelSerializer):
         ]
         read_only_fields = [
             "id",
-            "user",
             "user_name",
             "company_name",
             "branch_name",

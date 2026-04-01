@@ -37,11 +37,11 @@ class UserViewSet(CompanyFilterMixin, AbstractViewSet):
         Only SUPERADMIN can select company, ADMIN/HR must use their own company
         """
         user = self.request.user
-        role = serializer.validated_data.get('role', '').upper()
-        
+        role = serializer.validated_data.get("role", "").upper()
+
         # If authenticated user is not SUPERADMIN, force their company
-        if hasattr(user, 'role') and user.role.upper() != 'SUPERADMIN':
-            if role != 'SUPERADMIN' and hasattr(user, 'company') and user.company:
+        if hasattr(user, "role") and user.role.upper() != "SUPERADMIN":
+            if role != "SUPERADMIN" and hasattr(user, "company") and user.company:
                 serializer.save(company=user.company)
             else:
                 serializer.save()
