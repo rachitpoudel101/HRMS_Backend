@@ -9,6 +9,7 @@ from apps.users.serializers.company_serializers import CompanySerializer
 from apps.users.serializers.Branch_serializers import BranchSerializer
 from apps.users.serializers.employee_serializers import EmployeeSerializer
 from apps.users.serializers.users_serializers import UserSerializer
+from apps.users.serializers.current_user_serializers import CurrentUserSerializer
 from apps.users.models import Company, User, Branch, Employee
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
@@ -20,9 +21,9 @@ from rest_framework.permissions import IsAuthenticated
 @permission_classes([IsAuthenticated])
 def get_current_user(request):
     """
-    Returns the current authenticated user's profile
+    Returns the current authenticated user's complete profile including employee details
     """
-    serializer = UserSerializer(request.user)
+    serializer = CurrentUserSerializer(request.user)
     return Response(serializer.data)
 
 
@@ -65,9 +66,9 @@ class UserViewSet(CompanyFilterMixin, AbstractViewSet):
     @action(detail=False, methods=["get"], permission_classes=[IsAuthenticated])
     def me(self, request):
         """
-        Returns the current authenticated user's profile
+        Returns the current authenticated user's complete profile including employee details
         """
-        serializer = self.get_serializer(request.user)
+        serializer = CurrentUserSerializer(request.user)
         return Response(serializer.data)
 
     @action(
