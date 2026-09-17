@@ -1,54 +1,16 @@
 from rest_framework import serializers
-from apps.attendance.models import Attendance, FingerprintScan
-
-
-class FingerprintScanSerializer(serializers.ModelSerializer):
-    """
-    Serializer for FingerprintScan model
-    """
-
-    employee_name = serializers.CharField(source="employee.name", read_only=True)
-    employee_id = serializers.CharField(source="employee.employee_id", read_only=True)
-
-    class Meta:
-        model = FingerprintScan
-        fields = [
-            "id",
-            "employee",
-            "employee_name",
-            "employee_id",
-            "scan_time",
-            "scan_type",
-            "device_id",
-            "scan_status",
-            "attendance",
-        ]
-        read_only_fields = ["id", "scan_time"]
-
-
-class FingerprintScanListSerializer(serializers.ModelSerializer):
-    """
-    Simplified serializer for listing fingerprint scans
-    """
-
-    class Meta:
-        model = FingerprintScan
-        fields = ["id", "scan_time", "scan_type", "scan_status", "device_id"]
-        read_only_fields = ["id", "scan_time"]
+from apps.attendance.models import Attendance
 
 
 class AttendanceSerializer(serializers.ModelSerializer):
     """
-    Serializer for Attendance model
+    Serializer for Attendance model with approval fields
     """
 
     employee_name = serializers.CharField(source="employee.name", read_only=True)
     employee_id = serializers.CharField(source="employee.employee_id", read_only=True)
-    check_in_scan_details = FingerprintScanListSerializer(
-        source="check_in_scan", read_only=True
-    )
-    check_out_scan_details = FingerprintScanListSerializer(
-        source="check_out_scan", read_only=True
+    approved_by_name = serializers.CharField(
+        source="approved_by.username", read_only=True
     )
 
     class Meta:
@@ -60,12 +22,12 @@ class AttendanceSerializer(serializers.ModelSerializer):
             "employee_id",
             "check_in",
             "check_out",
-            "check_in_scan",
-            "check_out_scan",
-            "check_in_scan_details",
-            "check_out_scan_details",
             "date",
             "status",
+            "is_approved",
+            "approved_by",
+            "approved_by_name",
+            "approved_at",
             "created_at",
             "updated_at",
             "deleted_at",
@@ -73,7 +35,14 @@ class AttendanceSerializer(serializers.ModelSerializer):
             "updated_by",
             "deleted_by",
         ]
-        read_only_fields = ["id", "created_at", "updated_at"]
+        read_only_fields = [
+            "id",
+            "created_at",
+            "updated_at",
+            "is_approved",
+            "approved_by",
+            "approved_at",
+        ]
 
 
 class AttendanceListSerializer(serializers.ModelSerializer):
@@ -95,13 +64,14 @@ class AttendanceListSerializer(serializers.ModelSerializer):
             "check_in",
             "check_out",
             "status",
+            "is_approved",
         ]
         read_only_fields = ["id"]
 
 
 class AttendanceCreateUpdateSerializer(serializers.ModelSerializer):
     """
-    Serializer for creating and updating attendance records
+    Serializer for creating and updating attendance records (admin/HR only)
     """
 
     class Meta:
@@ -110,8 +80,6 @@ class AttendanceCreateUpdateSerializer(serializers.ModelSerializer):
             "employee",
             "check_in",
             "check_out",
-            "check_in_scan",
-            "check_out_scan",
             "date",
             "status",
         ]
@@ -126,3 +94,38 @@ class AttendanceCreateUpdateSerializer(serializers.ModelSerializer):
                     "Check-out time must be after check-in time"
                 )
         return data
+
+
+class AttendanceApprovalSerializer(serializers.ModelSerializer):
+    """
+    Serializer for manager to approve attendance records
+    """
+
+    employee_name = serializers.CharField(source="employee.name", read_only=True)
+    employee_id = serializers.CharField(source="employee.employee_id", read_only=True)
+
+    class Meta:
+        model = Attendance
+        fields = [
+            "id",
+            "employee",
+            "employee_name",
+            "employee_id",
+            "date",
+            "check_in",
+            "check_out",
+            "status",
+            "is_approved",
+            "approved_by",
+            "approved_at",
+        ]
+        read_only_fields = [
+            "id",
+            "employee",
+            "date",
+            "check_in",
+            "check_out",
+            "status",
+            "approved_by",
+            "approved_at",
+        ]
