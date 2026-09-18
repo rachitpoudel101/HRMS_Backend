@@ -1,55 +1,21 @@
 from rest_framework import serializers
-from apps.attendance.models import Attendance, FingerprintScan
-
-
-class FingerprintScanSerializer(serializers.ModelSerializer):
-    """
-    Serializer for FingerprintScan model
-    """
-
-    employee_name = serializers.CharField(source="employee.name", read_only=True)
-    employee_id = serializers.CharField(source="employee.employee_id", read_only=True)
-
-    class Meta:
-        model = FingerprintScan
-        fields = [
-            "id",
-            "employee",
-            "employee_name",
-            "employee_id",
-            "scan_time",
-            "scan_type",
-            "device_id",
-            "scan_status",
-            "attendance",
-        ]
-        read_only_fields = ["id", "scan_time"]
-
-
-class FingerprintScanListSerializer(serializers.ModelSerializer):
-    """
-    Simplified serializer for listing fingerprint scans
-    """
-
-    class Meta:
-        model = FingerprintScan
-        fields = ["id", "scan_time", "scan_type", "scan_status", "device_id"]
-        read_only_fields = ["id", "scan_time"]
+from apps.attendance.models import Attendance
 
 
 class AttendanceSerializer(serializers.ModelSerializer):
     """
-    Serializer for Attendance model
+    Serializer for Attendance model with approval fields and work duration
     """
 
     employee_name = serializers.CharField(source="employee.name", read_only=True)
     employee_id = serializers.CharField(source="employee.employee_id", read_only=True)
-    check_in_scan_details = FingerprintScanListSerializer(
-        source="check_in_scan", read_only=True
+    approved_by_name = serializers.CharField(
+        source="approved_by.username", read_only=True
     )
-    check_out_scan_details = FingerprintScanListSerializer(
-        source="check_out_scan", read_only=True
-    )
+    work_duration = serializers.SerializerMethodField()
+    work_duration_hours = serializers.SerializerMethodField()
+    work_duration_minutes = serializers.SerializerMethodField()
+    total_hours = serializers.SerializerMethodField()
 
     class Meta:
         model = Attendance
@@ -60,12 +26,16 @@ class AttendanceSerializer(serializers.ModelSerializer):
             "employee_id",
             "check_in",
             "check_out",
-            "check_in_scan",
-            "check_out_scan",
-            "check_in_scan_details",
-            "check_out_scan_details",
             "date",
             "status",
+            "work_duration",
+            "work_duration_hours",
+            "work_duration_minutes",
+            "total_hours",
+            "is_approved",
+            "approved_by",
+            "approved_by_name",
+            "approved_at",
             "created_at",
             "updated_at",
             "deleted_at",
@@ -73,16 +43,64 @@ class AttendanceSerializer(serializers.ModelSerializer):
             "updated_by",
             "deleted_by",
         ]
-        read_only_fields = ["id", "created_at", "updated_at"]
+        read_only_fields = [
+            "id",
+            "created_at",
+            "updated_at",
+            "is_approved",
+            "approved_by",
+            "approved_at",
+        ]
+
+    def get_work_duration(self, obj):
+        """
+        Calculate work duration in human readable format (e.g., '8 hours 30 minutes')
+        """
+        if obj.check_in and obj.check_out:
+            duration = obj.check_out - obj.check_in
+            hours = duration.seconds // 3600
+            minutes = (duration.seconds % 3600) // 60
+            return f"{hours} hours {minutes} minutes"
+        return None
+
+    def get_work_duration_hours(self, obj):
+        """
+        Get only hours worked
+        """
+        if obj.check_in and obj.check_out:
+            duration = obj.check_out - obj.check_in
+            return duration.seconds // 3600
+        return 0
+
+    def get_work_duration_minutes(self, obj):
+        """
+        Get remaining minutes after hours
+        """
+        if obj.check_in and obj.check_out:
+            duration = obj.check_out - obj.check_in
+            return (duration.seconds % 3600) // 60
+        return 0
+
+    def get_total_hours(self, obj):
+        """
+        Get total hours as decimal (e.g., 8.5 for 8 hours 30 minutes)
+        """
+        if obj.check_in and obj.check_out:
+            duration = obj.check_out - obj.check_in
+            total_seconds = duration.total_seconds()
+            return round(total_seconds / 3600, 2)
+        return 0.0
 
 
 class AttendanceListSerializer(serializers.ModelSerializer):
     """
-    Simplified serializer for listing attendance records
+    Simplified serializer for listing attendance records with work duration
     """
 
     employee_name = serializers.CharField(source="employee.name", read_only=True)
     employee_id = serializers.CharField(source="employee.employee_id", read_only=True)
+    work_duration = serializers.SerializerMethodField()
+    total_hours = serializers.SerializerMethodField()
 
     class Meta:
         model = Attendance
@@ -95,13 +113,33 @@ class AttendanceListSerializer(serializers.ModelSerializer):
             "check_in",
             "check_out",
             "status",
+            "work_duration",
+            "total_hours",
+            "is_approved",
         ]
         read_only_fields = ["id"]
+
+    def get_work_duration(self, obj):
+        """Calculate work duration in human readable format"""
+        if obj.check_in and obj.check_out:
+            duration = obj.check_out - obj.check_in
+            hours = duration.seconds // 3600
+            minutes = (duration.seconds % 3600) // 60
+            return f"{hours}h {minutes}m"
+        return None
+
+    def get_total_hours(self, obj):
+        """Get total hours as decimal"""
+        if obj.check_in and obj.check_out:
+            duration = obj.check_out - obj.check_in
+            total_seconds = duration.total_seconds()
+            return round(total_seconds / 3600, 2)
+        return 0.0
 
 
 class AttendanceCreateUpdateSerializer(serializers.ModelSerializer):
     """
-    Serializer for creating and updating attendance records
+    Serializer for creating and updating attendance records (admin/HR only)
     """
 
     class Meta:
@@ -110,8 +148,6 @@ class AttendanceCreateUpdateSerializer(serializers.ModelSerializer):
             "employee",
             "check_in",
             "check_out",
-            "check_in_scan",
-            "check_out_scan",
             "date",
             "status",
         ]
@@ -126,3 +162,38 @@ class AttendanceCreateUpdateSerializer(serializers.ModelSerializer):
                     "Check-out time must be after check-in time"
                 )
         return data
+
+
+class AttendanceApprovalSerializer(serializers.ModelSerializer):
+    """
+    Serializer for manager to approve attendance records
+    """
+
+    employee_name = serializers.CharField(source="employee.name", read_only=True)
+    employee_id = serializers.CharField(source="employee.employee_id", read_only=True)
+
+    class Meta:
+        model = Attendance
+        fields = [
+            "id",
+            "employee",
+            "employee_name",
+            "employee_id",
+            "date",
+            "check_in",
+            "check_out",
+            "status",
+            "is_approved",
+            "approved_by",
+            "approved_at",
+        ]
+        read_only_fields = [
+            "id",
+            "employee",
+            "date",
+            "check_in",
+            "check_out",
+            "status",
+            "approved_by",
+            "approved_at",
+        ]

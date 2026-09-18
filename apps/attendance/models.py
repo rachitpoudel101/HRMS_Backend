@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from apps.common.models import (
     BaseTimeStampModelMixin,
     SoftDeleteModelMixin,
@@ -9,7 +10,7 @@ from apps.users.models import Employee
 
 class Attendance(BaseTimeStampModelMixin, SoftDeleteModelMixin, BaseAuditModelMixin):
     """
-    Model to track employee attendance
+    Model to track employee attendance with manager approval system
     """
 
     class EmployeeStatus(models.TextChoices):
@@ -27,22 +28,6 @@ class Attendance(BaseTimeStampModelMixin, SoftDeleteModelMixin, BaseAuditModelMi
     check_out = models.DateTimeField(
         null=True, blank=True, help_text="Check-out time of the employee"
     )
-    check_in_scan = models.ForeignKey(
-        "FingerprintScan",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="attendance_checkin",
-        help_text="Fingerprint scan record for check-in",
-    )
-    check_out_scan = models.ForeignKey(
-        "FingerprintScan",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="attendance_checkout",
-        help_text="Fingerprint scan record for check-out",
-    )
     date = models.DateField(help_text="Date of the attendance record")
     status = models.CharField(
         max_length=20,
@@ -50,53 +35,26 @@ class Attendance(BaseTimeStampModelMixin, SoftDeleteModelMixin, BaseAuditModelMi
         default=EmployeeStatus.PRESENT,
         help_text="Attendance status of the employee",
     )
+    is_approved = models.BooleanField(
+        default=False, help_text="Whether the attendance has been approved by manager"
+    )
+    approved_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="approved_attendances",
+        help_text="Manager who approved this attendance",
+    )
+    approved_at = models.DateTimeField(
+        null=True, blank=True, help_text="When the attendance was approved"
+    )
 
     class Meta:
         db_table = "attendance"
         verbose_name = "Attendance"
         verbose_name_plural = "Attendances"
+        unique_together = [["employee", "date"]]
 
     def __str__(self):
         return f"Attendance record for {self.employee} on {self.date}"
-
-
-class FingerprintScan(models.Model):
-    """Model to store fingerprint scan records"""
-
-    class scanStatus(models.TextChoices):
-        SUCCESS = "SUCCESS", "Success"
-        FAIL = "FAIL", "Fail"
-        DUPLICATE = "DUPLICATE", "Duplicate"
-
-    class scanType(models.TextChoices):
-        IN = "IN", "Check In"
-        OUT = "OUT", "Check Out"
-
-    employee = models.ForeignKey(
-        Employee, on_delete=models.CASCADE, related_name="fingerprint_scans"
-    )
-    scan_time = models.DateTimeField(auto_now_add=True)
-    scan_type = models.CharField(max_length=10, choices=scanType.choices)
-    device_id = models.CharField(max_length=50, blank=True, null=True)
-    scan_status = models.CharField(
-        max_length=20,
-        choices=scanStatus.choices,
-        null=True,
-        blank=True,
-        default=scanStatus.SUCCESS,
-    )
-    attendance = models.ForeignKey(
-        "Attendance",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="fingerprint_scans",
-    )
-
-    class Meta:
-        db_table = "fingerprint_scan"
-        verbose_name = "Fingerprint Scan"
-        verbose_name_plural = "Fingerprint Scans"
-
-    def __str__(self):
-        return f"{self.employee} - {self.scan_type} at {self.scan_time}"

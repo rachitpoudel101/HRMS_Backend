@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     "apps.attendance",
     "apps.holidays",
     "apps.notice",
+    "apps.dashboard",
 ]
 
 MIDDLEWARE = [
