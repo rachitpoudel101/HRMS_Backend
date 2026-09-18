@@ -62,14 +62,26 @@ class Command(BaseCommand):
 
                 # 3. Create Departments
                 departments_data = [
-                    {"name": "Engineering", "code": "ENG", "description": "Software Development Team"},
+                    {
+                        "name": "Engineering",
+                        "code": "ENG",
+                        "description": "Software Development Team",
+                    },
                     {
                         "name": "Human Resources",
                         "code": "HR",
                         "description": "HR and Admin Department",
                     },
-                    {"name": "Sales", "code": "SALES", "description": "Sales and Marketing Team"},
-                    {"name": "Finance", "code": "FIN", "description": "Finance and Accounting"},
+                    {
+                        "name": "Sales",
+                        "code": "SALES",
+                        "description": "Sales and Marketing Team",
+                    },
+                    {
+                        "name": "Finance",
+                        "code": "FIN",
+                        "description": "Finance and Accounting",
+                    },
                 ]
 
                 departments = {}
@@ -80,7 +92,7 @@ class Command(BaseCommand):
                         branch=branch,
                         defaults={
                             "code": dept_data["code"],
-                            "description": dept_data["description"]
+                            "description": dept_data["description"],
                         },
                     )
                     departments[dept_data["name"]] = dept
@@ -323,12 +335,14 @@ class Command(BaseCommand):
                         # Create attendance for all employees
                         check_in_time = timezone.make_aware(
                             datetime.combine(
-                                attendance_date, datetime.strptime("09:00", "%H:%M").time()
+                                attendance_date,
+                                datetime.strptime("09:00", "%H:%M").time(),
                             )
                         )
                         check_out_time = timezone.make_aware(
                             datetime.combine(
-                                attendance_date, datetime.strptime("18:00", "%H:%M").time()
+                                attendance_date,
+                                datetime.strptime("18:00", "%H:%M").time(),
                             )
                         )
 
@@ -433,19 +447,13 @@ class Command(BaseCommand):
                             self.style.SUCCESS(f"✓ Created notice: {notice.name}")
                         )
 
-                self.stdout.write(
-                    self.style.SUCCESS("\n" + "=" * 60)
-                )
+                self.stdout.write(self.style.SUCCESS("\n" + "=" * 60))
                 self.stdout.write(
                     self.style.SUCCESS("Database seeding completed successfully! 🎉")
                 )
-                self.stdout.write(
-                    self.style.SUCCESS("=" * 60)
-                )
+                self.stdout.write(self.style.SUCCESS("=" * 60))
                 self.stdout.write(self.style.SUCCESS("\nLogin Credentials:"))
-                self.stdout.write(
-                    self.style.SUCCESS("-" * 60)
-                )
+                self.stdout.write(self.style.SUCCESS("-" * 60))
                 self.stdout.write(
                     self.style.WARNING(
                         "\n1. Admin User:\n   Username: admin\n   Password: admin123"
@@ -471,12 +479,8 @@ class Command(BaseCommand):
                         "\n5. Employee 2:\n   Username: employee2\n   Password: employee123"
                     )
                 )
-                self.stdout.write(
-                    self.style.SUCCESS("\n" + "=" * 60 + "\n")
-                )
+                self.stdout.write(self.style.SUCCESS("\n" + "=" * 60 + "\n"))
 
         except Exception as e:
-            self.stdout.write(
-                self.style.ERROR(f"Error during seeding: {str(e)}")
-            )
+            self.stdout.write(self.style.ERROR(f"Error during seeding: {str(e)}"))
             raise e

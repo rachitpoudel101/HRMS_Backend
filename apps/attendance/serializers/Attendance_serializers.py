@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from apps.attendance.models import Attendance
-from datetime import timedelta
 
 
 class AttendanceSerializer(serializers.ModelSerializer):

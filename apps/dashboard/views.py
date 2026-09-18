@@ -2,9 +2,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from django.utils import timezone
 from datetime import date, timedelta
-from django.db.models import Count, Q
 from apps.attendance.models import Attendance
 from apps.users.models import Employee
 from apps.notice.models import Notic
@@ -119,7 +117,9 @@ def dashboard_activities(request):
                 "total_team_members": total_team,
                 "today_present": today_present,
                 "team_attendance_rate": (
-                    round((today_present / total_team) * 100, 1) if total_team > 0 else 0
+                    round((today_present / total_team) * 100, 1)
+                    if total_team > 0
+                    else 0
                 ),
             }
         else:
@@ -199,7 +199,9 @@ def dashboard_activities(request):
                         "employee_id": att.employee.employee_id,
                         "date": att.date.isoformat(),
                         "check_in": att.check_in.isoformat() if att.check_in else None,
-                        "check_out": att.check_out.isoformat() if att.check_out else None,
+                        "check_out": att.check_out.isoformat()
+                        if att.check_out
+                        else None,
                     }
                     for att in pending.select_related("employee")[:5]
                 ],
