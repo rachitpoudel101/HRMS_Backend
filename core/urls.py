@@ -49,4 +49,5 @@ urlpatterns = [
     path("", include("urls.attendance_urls")),
     path("", include("urls.notice_urls")),
     path("", include("urls.holidays_urls")),
+    path("", include("urls.dashboard_urls")),
 ]
